@@ -103,9 +103,11 @@ if uploaded_file is not None:
             supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
             data = df.to_dict(orient="records")
             response = supabase.table(table_name).insert(data).execute()
+            response = supabase.table(table_name).insert(data).execute()
             if response.status_code == 201:
                 st.success(f"Data successfully saved to table {table_name}!")
             else:
-                st.error(f"Error saving data: {response.status_code}")
+                st.error(f"Error saving data: {response.status_code} - {getattr(response, 'data', '')} {getattr(response, 'error', '')}")
+
         else:
             st.error(f"Failed to create/alter table: {resp_create.text}")
