@@ -18,7 +18,8 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     st.write("Data preview:")
     st.dataframe(df)
-    table_name = os.path.splitext(uploaded_file.name).lower().replace(' ', '_')
+    filename, _ = os.path.splitext(uploaded_file.name)
+    table_name = filename.lower().replace(' ', '_')
     st.write(f"Destination table: **{table_name}**")
 
     # Create table SQL (basic: all columns as text)
