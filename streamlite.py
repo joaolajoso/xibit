@@ -21,13 +21,13 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     st.write("Visualização dos dados carregados:")
     st.dataframe(df)
-
     if st.button("Salvar no Supabase (tabela raw)"):
-        # Converta todos os NaN para None para evitar erros na serialização JSON
-        data = df.where(pd.notnull(df), None).to_dict(orient="records")
+        # Corrige valores incompatíveis com JSON
+        df = df.replace({np.nan: None, np.inf: None, -np.inf: None})
+        data = df.to_dict(orient="records")
         response = supabase.table("raw").insert(data).execute()
         if response.status_code == 201:
-            st.success("Dados salvos com sucesso na tabela raw do Supabase!")
+            st.success("Dados salvos com sucesso!")
         else:
             st.error(f"Erro ao salvar dados: {response.status_code}")
 
