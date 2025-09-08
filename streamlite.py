@@ -95,7 +95,7 @@ def create_raw_table(table_name, df):
     create_table_query = f"CREATE TABLE {table_name} (\n\t" + ",\n\t".join(columns) + "\n);"
     
     # Execute query
-    result = execute_sql(create_table_query)
+    result = execute_sql_2(create_table_query)
     
     # Log in lineage table
     log_data_lineage("upload", table_name, len(df), "raw", create_table_query)
