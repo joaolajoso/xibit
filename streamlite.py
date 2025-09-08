@@ -64,9 +64,19 @@ st.title("Upload and Save CSV to Supabase (auto schema match)")
 
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 if uploaded_file is not None:
+
+    # After reading file:
     df = pd.read_csv(uploaded_file)
-    st.write("Data preview:")
-    st.dataframe(df)
+    df.columns = [col.lower().replace(' ', '_') for col in df.columns]
+
+    existing_cols = [col.lower() for col in get_existing_columns(table_name, sql_url, headers)]
+    missing_cols = [col for col in df.columns if col not in existing_cols]
+    if missing_cols:
+        add_missing_columns(table_name, missing_cols, df, sql_url, headers)
+        st.warning(f"Added columns: {missing_cols}")
+    else:
+        st.success("All columns present.")
+
 
     filename, _ = os.path.splitext(uploaded_file.name)
     table_name = filename.lower().replace(' ', '_')
@@ -102,7 +112,7 @@ if uploaded_file is not None:
             from supabase import create_client
             supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
             data = df.to_dict(orient="records")
-            response = supabase.table(table_name).insert(data).execute()
+            
             response = supabase.table(table_name).insert(data).execute()
             if response.status_code == 201:
                 st.success(f"Data successfully saved to table {table_name}!")
