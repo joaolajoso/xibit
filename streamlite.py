@@ -31,16 +31,24 @@ def generate_create_table_query(table_name, df):
     return sql
 
 def get_existing_columns(table_name, sql_url, headers):
-    # Query to get all current columns in the table
     get_cols_sql = f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}';"
     resp = requests.post(
         sql_url,
         headers=headers,
         json={"sql": get_cols_sql}
     )
-    if resp.ok and isinstance(resp.json(), list):
-        return [row['column_name'] for row in resp.json()]
+    # Defensive: Check for valid JSON before parsing
+    try:
+        if resp.ok and resp.content:
+            data = resp.json()
+            if isinstance(data, list):
+                return [row['column_name'] for row in data if 'column_name' in row]
+        else:
+            st.warning(f"Could not fetch columns, response: {resp.text}")
+    except Exception as e:
+        st.error(f"Failed to decode columns response: {str(e)}. Raw response: {resp.text}")
     return []
+
 
 def add_missing_columns(table_name, missing_cols, df, sql_url, headers):
     # For each missing column, add via ALTER TABLE
