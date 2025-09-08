@@ -23,6 +23,7 @@ if uploaded_file is not None:
     st.dataframe(df)
 
     if st.button("Salvar no Supabase (tabela raw)"):
+        # Converta todos os NaN para None para evitar erros na serialização JSON
         data = df.where(pd.notnull(df), None).to_dict(orient="records")
         response = supabase.table("raw").insert(data).execute()
         if response.status_code == 201:
