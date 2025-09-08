@@ -16,8 +16,8 @@ st.set_page_config(page_title="Metadata-Driven Platform", layout="wide")
 load_dotenv()
 
 # Supabase configuration
-SUPABASE_URL = os.getenv("VITE_SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+SUPABASE_URL =  st.secrets["SUPABASE_URL"] #os.getenv("VITE_SUPABASE_URL")
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"] #os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Supabase interaction functions
