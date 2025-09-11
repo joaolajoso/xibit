@@ -77,7 +77,7 @@ def get_metadata_mappings():
 # Function to create a new raw table
 def create_raw_table(table_name, df):
     # Rename columns according to rules
-    df.columns = [col.replace(' ', '_').replace('-', '_').replace('.', '_') for col in df.columns]
+    df.columns = [col.lower().replace(' ', '_').replace('-', '_').replace('.', '_') for col in df.columns]
     
     # Create SQL script for table creation
     columns = []
@@ -112,7 +112,7 @@ def insert_data_to_table(table_name, df):
     for _, row in df.iterrows():
         record = {}
         for col in df.columns:
-            record[col.upper()] = str(row[col]) if pd.notna(row[col]) else None
+            record[col] = str(row[col]) if pd.notna(row[col]) else None
         records.append(record)
     
     # Insert data
