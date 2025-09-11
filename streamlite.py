@@ -105,7 +105,7 @@ def create_raw_table(table_name, df):
 # Function to insert data into table
 def insert_data_to_table(table_name, df):
     # Rename columns according to rules
-    df.columns = [col.lower()replace(' ', '_').replace('-', '_').replace('.', '_') for col in df.columns]
+    df.columns = [col.lower().replace(' ', '_').replace('-', '_').replace('.', '_') for col in df.columns]
 
     # Prepare data for insertion
     records = []
