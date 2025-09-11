@@ -77,8 +77,8 @@ def get_metadata_mappings():
 # Function to create a new raw table
 def create_raw_table(table_name, df):
     # Rename columns according to rules
-    df.columns = [col.lower().replace(' ', '_').replace('-', '_').replace('.', '_') for col in df.columns]
-    
+    df.columns = [col.lower().replace(' ', '_').replace('-', '_').replace('.', '_').replace('/', '_') for col in df.columns]
+
     # Create SQL script for table creation
     columns = []
     for col in df.columns:
@@ -121,7 +121,7 @@ def insert_data_to_table(table_name, df):
     # Log in lineage table
     insert_query = f"INSERT INTO {table_name} (...) VALUES (...)"  # Simplified for logging
     log_data_lineage("upload", table_name, len(records), "raw", insert_query)
-    
+    st.write(insert_query)
     return response.data
 
 # User Interface
