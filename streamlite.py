@@ -457,7 +457,7 @@ def dashboards_page():
         # Execute query to get indicator data
         try:
             with st.spinner("Loading indicator data..."):
-                result = execute_sql_2(query)
+                result = execute_sql(query)
                 
                 if result:
                     # Convert result to DataFrame
