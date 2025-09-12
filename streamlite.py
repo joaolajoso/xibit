@@ -382,7 +382,7 @@ def indicator_creation_page():
     if query and st.button("Test Query"):
         try:
             with st.spinner("Executing query..."):
-                result = execute_sql_2(query)
+                result = execute_sql(query)
                 st.write("Query Result:")
                 # Convert result to DataFrame
                 if result:
