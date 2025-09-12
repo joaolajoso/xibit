@@ -473,7 +473,7 @@ def dashboards_page():
                     # Automatically determine visualization type based on data
                     viz_type = st.selectbox(
                         "Visualization Type:",
-                        ["Table", "Bar Chart", "Line Chart", "Pie Chart", "Heatmap"]
+                        [ "Bar Chart", "Table", "Line Chart", "Pie Chart", "Heatmap"]
                     )
                     
                     if viz_type == "Table":
